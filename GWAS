@@ -1,0 +1,95 @@
+import os
+import subprocess
+import pandas as pd
+import numpy as np
+
+
+    def __init__(self, case_control_file, phenotype_file, genomic_files, output_dir):
+        self.case_control_file = case_control_file
+        self.phenotype_file = phenotype_file
+        self.genomic_files = genomic_files
+        self.output_dir = output_dir
+
+ 
+        """
+        Create the case/control cohort from the provided data.
+        """
+        # Assuming the case/control data is in a file with 'Case' and 'Control' columns
+        cohort_data = pd.read_csv(self.case_control_file)
+        print(f"Cohort created with {len(cohort_data)} samples.")
+        return cohort_data
+
+        """
+        Create a phenotype file from the case/control data.
+        """
+        cohort_data = self.build_cohort()
+        phenotype_data = cohort_data[['Sample_ID', 'Disease_Status', 'Age', 'Sex']]  # Simplified
+        phenotype_file = os.path.join(self.output_dir, 'phenofile.txt')
+        phenotype_data.to_csv(phenotype_file, index=False, sep='\t')
+        print(f"Phenotype file created at {phenotype_file}")
+        return phenotype_file
+
+
+        """
+        Create a list of genomic files to run GWAS on.
+        """
+        genomic_files = "\n".join(self.genomic_files)
+        genomic_file_list = os.path.join(self.output_dir, 'genomic_file_list.txt')
+        with open(genomic_file_list, 'w') as f:
+            f.write(genomic_files)
+        print(f"Genomic file list created at {genomic_file_list}")
+        return genomic_file_list
+
+  
+        """
+        Create any other necessary input files for GWAS analysis.
+        """
+        # This could include kinship matrices, covariate files, PCA files, etc.
+        # Placeholder for other file creation if needed.
+        print("Creating additional input files if necessary.")
+        return True
+
+   
+        """
+        Run the GWAS pipeline by submitting jobs.
+        """
+        # Placeholder for SLURM/Kubernetes job submission or cloud submission logic
+        print("Launching pipeline job as an interactive job...")
+
+
+        """
+        Monitor the jobs until completion.
+        """
+        # Placeholder for monitoring job status
+        print("Monitoring job status...")
+
+   
+        """
+        Post-process and view the results of the GWAS.
+        """
+        # Placeholder for result processing and visualization
+        print("Viewing GWAS results...")
+
+    
+        """
+        Export the results to common formats (CSV, Excel, etc.).
+        """
+        results_file = os.path.join(self.output_dir, 'gwas_results.csv')
+        # Placeholder to save results
+        results = pd.DataFrame(np.random.rand(10, 5), columns=['SNP', 'P-value', 'Beta', 'SE', 'Chr'])
+        results.to_csv(results_file, index=False)
+        print(f"Results exported to {results_file}")
+
+
+case_control_file = 'case_control_data.csv'
+phenotype_file = 'phenotype_data.txt'
+genomic_files = ['file1.vcf', 'file2.vcf', 'file3.vcf']
+output_dir = '/path/to/output'
+
+pipeline = GWASPipeline(case_control_file, phenotype_file, genomic_files, output_dir)
+pipeline.create_phenofile()
+pipeline.create_genomic_file_list()
+pipeline.run_pipeline()
+pipeline.monitor_jobs()
+pipeline.view_results()
+pipeline.export_results()
